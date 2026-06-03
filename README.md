@@ -37,7 +37,7 @@ Specifies if Libra should have its information segments in individual lines of t
 
 ### Installation: ###
 
-* Click the green `Code <>` icon on the top right of this page and Download ZIP
+* Click the green `<> Code` icon on the top right of this page and Download ZIP
 * Open the .zip file
 * Move the folder called Libra-main into your Windower/AddOns directory
 * Remove the "-main" part of the folder name if you wish
@@ -45,3 +45,18 @@ Specifies if Libra should have its information segments in individual lines of t
 * Open init.txt
 * Add the line `lua l libra` to the bottom of the file; save and close
 * NOTE: This plugin might overlap with InfoBar if you have it installed, make sure to move or disable InfoBar from the AddOns configuration when you next launch Windower
+
+----
+
+### Reporting Issues: ###
+
+While the database is pretty up to date I may have missed a few mobs or resistances, if you see any issues send an email to zyphira.libra@gmail.com or hit me up on Bluesky @zyphira.vanadiel.network
+
+----
+
+### Credits: ###
+
+* Kenshi for the original InfoBar
+* Dtr (Daleterrance on Bahamut) for kicking this whole thing off
+* The AzureSkies Linkshell on Bahamut! (mwah <3)
+* And you!
