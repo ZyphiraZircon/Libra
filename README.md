@@ -52,6 +52,8 @@ Specifies if Libra should have its information segments in individual lines of t
 
 While the database is pretty up to date I may have missed a few mobs or resistances, if you see any issues send an email to zyphira.libra@gmail.com or hit me up on Bluesky [@zyphira.vanadiel.network](https://bsky.app/profile/zyphira.vanadiel.network)
 
+Check back every so often for database updates and improvements!
+
 ----
 
 ### Credits: ###
