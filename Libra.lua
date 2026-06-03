@@ -927,7 +927,6 @@ function get_target(index)
     clear_libra_variables()
     local player = windower.ffxi.get_player()
     local target = windower.ffxi.get_mob_by_target('st') or windower.ffxi.get_mob_by_target('t') or player
-    print(target.race)
     libra.target_name = target.name
     libra.target_id = target.id
     libra.target_index = target.index
@@ -1127,19 +1126,6 @@ function format_aggro_type_table(passive,link,detectSight,detectSound,detectMagi
     return aggro
 end
 
-function dump(o)
-    if type(o) == 'table' then
-       local s = '{ '
-       for k,v in pairs(o) do
-          if type(k) ~= 'number' then k = '"'..k..'"' end
-          s = s .. '['..k..'] = ' .. dump(v) .. ','
-       end
-       return s .. '} '
-    else
-       return tostring(o)
-    end
- end
-
 function refresh()
     load_sprites()
     load_texts()
@@ -1224,7 +1210,7 @@ windower.register_event('addon command', function(...)
             windower.add_to_chat(207,"Current position: x" .. settings.display.pos.x .. " y" .. settings.display.pos.y)
             windower.add_to_chat(207,"Current padding: " .. settings.display.padding)
             windower.add_to_chat(207,"Current alpha: " .. settings.display.alpha)
-            windower.add_to_chat(207,"Multiline modee: " .. settings.display.multiline)
+            windower.add_to_chat(207,"Multi-line mode: " .. settings.display.multiline)
         elseif args[1]:lower() == 'scale' then
             if not args[2] then
                 windower.add_to_chat(207,"Libra: Second argument not specified, use '//libra help' for info.")
@@ -1296,7 +1282,7 @@ windower.register_event('addon command', function(...)
                 settings.display.multiline = newMultiline
                 config.save(settings)
                 refresh()
-                windower.add_to_chat(207,"Libra: Multiline mode is now set to " .. tostring(newMultiline))
+                windower.add_to_chat(207,"Libra: Multi-line mode is now set to " .. tostring(newMultiline))
             else
                 windower.add_to_chat(207,"Libra: Second argument wrong, use '//libra help' for info.")
             end
