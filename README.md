@@ -50,7 +50,7 @@ Specifies if Libra should have its information segments in individual lines of t
 
 ### Reporting Issues: ###
 
-While the database is pretty up to date I may have missed a few mobs or resistances, if you see any issues send an email to zyphira.libra@gmail.com or hit me up on Bluesky @zyphira.vanadiel.network
+While the database is pretty up to date I may have missed a few mobs or resistances, if you see any issues send an email to zyphira.libra@gmail.com or hit me up on Bluesky [@zyphira.vanadiel.network](https://bsky.app/profile/zyphira.vanadiel.network)
 
 ----
 
@@ -60,3 +60,6 @@ While the database is pretty up to date I may have missed a few mobs or resistan
 * Dtr (Daleterrance on Bahamut) for kicking this whole thing off
 * The AzureSkies Linkshell on Bahamut! (mwah <3)
 * And you!
+
+
+No AI was used to make this AddOn
