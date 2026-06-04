@@ -54,7 +54,7 @@ defaults.display.pos.x = 0
 defaults.display.pos.y = 0
 defaults.display.scale = 1
 defaults.display.padding = 0
-defaults.display.alpha = 0.5
+defaults.display.alpha = 1
 defaults.display.multiline = false
 
 settings = config.load(defaults)
