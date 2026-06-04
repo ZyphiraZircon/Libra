@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.]]
 -- No AI was used in the making of this AddOn
 
 _addon.name = 'Libra'
-_addon.author = 'Zyphira, based on InfoBar by Kenshi, with help from dtr'
+_addon.author = 'Zyphira, based on InfoBar by Kenshi'
 _addon.version = '1.0b'
 _addon.commands = {'libra'}
 
@@ -843,8 +843,6 @@ end
 function get_db(target, zones, level)
     local mobQuery = 'SELECT * FROM "mobs" WHERE name = "'..target..'" AND zone = "'..zones..'"'
     libra = {}
-    box:bold(false)
-
     if mobsdb:isopen() and mobQuery then
         for id, name,family,zone,level,job,passive,link,nm,url,notes in mobsdb:urows(mobQuery) do
             local mobJob = job
@@ -858,6 +856,9 @@ function get_db(target, zones, level)
                         libra.family = family or ''
                         libra.mobtype = mobType or ''
                         libra.job = mobJob or ''
+                        if libra.job == '???' then
+                            libra.job = job or ''
+                        end
                         libra.level = level or ''
                         libra.nm = nm
 
@@ -887,7 +888,7 @@ function render_non_mob(textTypeUsed)
     local runningWidth = 0
     if (libra.target_name ~= '') then
         texts.pos(textTypeUsed, (settings.display.pos.x), (settings.display.pos.y + runningHeight))
-        local nameElement = libra.target_name
+        local nameElement = checkCraftGuildNPC(libra.target_name)
         if (libra.main_job and libra.main_job ~= '' and libra.main_job_level and libra.main_job_level ~= '') then
             nameElement = nameElement .. ' (' .. libra.main_job .. libra.main_job_level
             if (libra.sub_job and libra.sub_job ~= '' and libra.sub_job_level and libra.sub_job_level ~= '') then
@@ -918,6 +919,69 @@ function render_non_mob(textTypeUsed)
         end
     end
     update_and_show_background_sprites(runningWidth, runningHeight + (currentYExtent))
+end
+
+function checkCraftGuildNPC(name)
+    local newName = name
+    if (name == 'Doggomehr' and libra.smithing) then
+        newName = name .. libra.smithing
+        libra.target_race = 11
+    elseif (name == 'Amulya' and libra.smithing) then
+        newName = name .. libra.smithing
+        libra.target_race = 11
+    elseif (name == 'Kamilah' and libra.smithing) then
+        newName = name .. libra.smithing
+        libra.target_race = 11
+    elseif (name == 'Maymunah' and libra.alchemy) then
+        newName = name .. libra.alchemy
+        libra.target_race = 11
+    elseif (name == 'Wahraga' and libra.alchemy) then
+        newName = name .. libra.alchemy
+        libra.target_race = 11
+    elseif (name == 'Gathweeda' and libra.alchemy) then
+        newName = name .. libra.alchemy
+        libra.target_race = 11
+    elseif (name == 'Shih Tayuun' and libra.bonecraft) then
+        newName = name .. libra.bonecraft
+        libra.target_race = 11
+    elseif (name == 'Kuzah Hpirohpon' and libra.clothcraft) then
+        newName = name .. libra.clothcraft
+        libra.target_race = 11
+    elseif (name == 'Tilala' and libra.clothcraft) then
+        newName = name .. libra.clothcraft
+        libra.target_race = 11
+    elseif (name == 'Kopopo' and libra.cooking) then
+        newName = name .. libra.cooking
+        libra.target_race = 11
+    elseif (name == 'Babubu' and libra.fishing) then
+        newName = name .. libra.fishing
+        libra.target_race = 11
+    elseif (name == 'Mendoline' and libra.fishing) then
+        newName = name .. libra.fishing
+        libra.target_race = 11
+    elseif (name == 'Graegham' and libra.fishing) then
+        newName = name .. libra.fishing
+        libra.target_race = 11
+    elseif (name == 'Yabby Tanmikey' and libra.goldsmithing) then
+        newName = name .. libra.goldsmithing
+        libra.target_race = 11
+    elseif (name == 'Visala' and libra.goldsmithing) then
+        newName = name .. libra.goldsmithing
+        libra.target_race = 11
+    elseif (name == 'Bornahn' and libra.goldsmithing) then
+        newName = name .. libra.goldsmithing
+        libra.target_race = 11
+    elseif (name == 'Kueh Igunahmori' and libra.leathercraft) then
+        newName = name .. libra.leathercraft
+        libra.target_race = 11
+    elseif (name == 'Chaupire' and libra.woodworking) then
+        newName = name .. libra.woodworking
+        libra.target_race = 11
+    elseif (name == 'Dehbi Moshal' and libra.woodworking) then
+        newName = name .. libra.woodworking
+        libra.target_race = 11
+    end
+    return newName
 end
 
 
@@ -976,118 +1040,120 @@ function clear_libra_variables()
     currentYExtent = 0
 end
 
+math.round = function(n) return n >= 0.0 and n-n%-1 or n-n% 1 end
+
 function format_damage_type_table(physical,magical,breath,slashing,blunt,hand2hand,piercing,ranged,fire,wind,lightning,light,ice,earth,water,dark)
     local all = {}
     if physical then
         if physical == -100 then
-            all['Ph'] = physical
+            all['Ph'] = math.round(physical)
         elseif physical ~= 100 then
-            all['Ph'] = physical - 100
+            all['Ph'] = math.round(physical) - 100
         end
     end
     if magical then
         if magical == -100 then
-            all['Ma'] = magical
+            all['Ma'] = math.round(magical)
         elseif magical ~= 100 then
-            all['Ma'] = magical - 100
+            all['Ma'] = math.round(magical) - 100
         end
     end
     if breath then
         if breath == -100 then
-            all['Br'] = breath
+            all['Br'] = math.round(breath)
         elseif breath ~= 100 then
-            all['Br'] = breath - 100
+            all['Br'] = math.round(breath) - 100
         end
     end
     if slashing then
         if slashing == -100 then
-            all['Sl'] = slashing
+            all['Sl'] = math.round(slashing)
         elseif slashing ~= 100 then
-            all['Sl'] = slashing - 100
+            all['Sl'] = math.round(slashing) - 100
         end
     end
     if blunt then
         if blunt == -100 then
-            all['Bl'] = blunt
+            all['Bl'] = math.round(blunt)
         elseif blunt ~= 100 then
-            all['Bl'] = blunt - 100
+            all['Bl'] = math.round(blunt) - 100
         end
     end
     if hand2hand then
         if hand2hand == -100 then
-            all['H2H'] = hand2hand
+            all['H2H'] = math.round(hand2hand)
         elseif hand2hand ~= 100 then
-            all['H2H'] = hand2hand - 100
+            all['H2H'] = math.round(hand2hand) - 100
         end
     end
     if piercing then
         if piercing == -100 then
-            all['Pi'] = piercing
+            all['Pi'] = math.round(piercing)
         elseif piercing ~= 100 then
-            all['Pi'] = piercing - 100
+            all['Pi'] = math.round(piercing) - 100
         end
     end
     if ranged then
         if ranged == -100 then
-            all['Ra'] = ranged
+            all['Ra'] = math.round(ranged)
         elseif ranged ~= 100 then
-            all['Ra'] = ranged - 100
+            all['Ra'] = math.round(ranged) - 100
         end
     end
     if fire then
         if fire == -100 then
-            all['Fi'] = fire
+            all['Fi'] = math.round(fire)
         elseif fire ~= 100 then
-            all['Fi'] = fire - 100
+            all['Fi'] = math.round(fire) - 100
         end
     end
     if wind then
         if wind == -100 then
-            all['Wi'] = wind
+            all['Wi'] = math.round(wind)
         elseif wind ~= 100 then
-            all['Wi'] = wind - 100
+            all['Wi'] = math.round(wind) - 100
         end
     end
     if lightning then
         if lightning == -100 then
-            all['Th'] = lightning
+            all['Th'] = math.round(lightning)
         elseif lightning ~= 100 then
-            all['Th'] = lightning - 100
+            all['Th'] = math.round(lightning) - 100
         end
     end
     if light then
         if light == -100 then
-            all['Li'] = light
+            all['Li'] = math.round(light)
         elseif light ~= 100 then
-            all['Li'] = light - 100
+            all['Li'] = math.round(light) - 100
         end
     end
     if ice then
         if ice == -100 then
-            all['Ic'] = ice
+            all['Ic'] = math.round(ice)
         elseif ice ~= 100 then
-            all['Ic'] = ice - 100
+            all['Ic'] = math.round(ice) - 100
         end
     end
     if earth then
         if earth == -100 then
-            all['Ea'] = earth
+            all['Ea'] = math.round(earth)
         elseif earth ~= 100 then
-            all['Ea'] = earth - 100
+            all['Ea'] = math.round(earth) - 100
         end
     end
     if water then
         if water == -100 then
-            all['Wa'] = water
+            all['Wa'] = math.round(water)
         elseif water ~= 100 then
-            all['Wa'] = water - 100
+            all['Wa'] = math.round(water) - 100
         end
     end
     if dark then
         if dark == -100 then
-            all['Da'] = dark
+            all['Da'] = math.round(dark)
         elseif dark ~= 100 then
-            all['Da'] = dark - 100
+            all['Da'] = math.round(dark) - 100
         end
     end
     return all
@@ -1176,23 +1242,23 @@ end)
 
 windower.register_event('time change', function(new, old)
     local alchemy = new >= 8*60 and new <= 23*60 and 'Open' or 'Closed'
-    libra.alchemy = alchemy == "Closed" and '\\cs(255,0,0)'..alchemy..'\\cr' or '\\cs(0,255,0)'..alchemy..'\\cr'
+    libra.alchemy = ' (Open 8:00 - 23:00, Currently: ' .. (alchemy == "Closed" and '\\cs(255,0,0)'..alchemy..'\\cr' or '\\cs(0,255,0)'..alchemy..'\\cr') .. ')'
     local bonecraft = new >= 8*60 and new <= 23*60 and 'Open' or 'Closed'
-    libra.bonecraft = bonecraft == "Closed" and '\\cs(255,0,0)'..bonecraft..'\\cr' or '\\cs(0,255,0)'..bonecraft..'\\cr'
+    libra.bonecraft = ' (Open 8:00 - 23:00, Currently: ' .. (bonecraft == "Closed" and '\\cs(255,0,0)'..bonecraft..'\\cr' or '\\cs(0,255,0)'..bonecraft..'\\cr') .. ')'
     local clothcraft = new >= 6*60 and new <= 21*60 and 'Open' or 'Closed'
-    libra.clothcraft = clothcraft == "Closed" and '\\cs(255,0,0)'..clothcraft..'\\cr' or '\\cs(0,255,0)'..clothcraft..'\\cr'
+    libra.clothcraft = ' (Open 6:00 - 21:00, Currently: ' .. (clothcraft == "Closed" and '\\cs(255,0,0)'..clothcraft..'\\cr' or '\\cs(0,255,0)'..clothcraft..'\\cr') .. ')'
     local cooking = new >= 5*60 and new <= 20*60 and 'Open' or 'Closed'
-    libra.cooking = cooking == "Closed" and '\\cs(255,0,0)'..cooking..'\\cr' or '\\cs(0,255,0)'..cooking..'\\cr'
+    libra.cooking = ' (Open 5:00 - 20:00, Currently: ' .. (cooking == "Closed" and '\\cs(255,0,0)'..cooking..'\\cr' or '\\cs(0,255,0)'..cooking..'\\cr') .. ')'
     local fishing = new >= 3*60 and new <= 18*60 and 'Open' or 'Closed'
-    libra.fishing = fishing == "Closed" and '\\cs(255,0,0)'..fishing..'\\cr' or '\\cs(0,255,0)'..fishing..'\\cr'
+    libra.fishing = ' (Open 3:00 - 18:00, Currently: ' .. (fishing == "Closed" and '\\cs(255,0,0)'..fishing..'\\cr' or '\\cs(0,255,0)'..fishing..'\\cr') .. ')'
     local goldsmithing = new >= 8*60 and new <= 23*60 and 'Open' or 'Closed'
-    libra.goldsmithing = goldsmithing == "Closed" and '\\cs(255,0,0)'..goldsmithing..'\\cr' or '\\cs(0,255,0)'..goldsmithing..'\\cr'
+    libra.goldsmithing = ' (Open 8:00 - 23:00, Currently: ' .. (goldsmithing == "Closed" and '\\cs(255,0,0)'..goldsmithing..'\\cr' or '\\cs(0,255,0)'..goldsmithing..'\\cr') .. ')'
     local leathercraft = new >= 3*60 and new <= 18*60 and 'Open' or 'Closed'
-    libra.leathercraft = leathercraft == "Closed" and '\\cs(255,0,0)'..leathercraft..'\\cr' or '\\cs(0,255,0)'..leathercraft..'\\cr'
+    libra.leathercraft = ' (Open 3:00 - 18:00, Currently: ' .. (leathercraft == "Closed" and '\\cs(255,0,0)'..leathercraft..'\\cr' or '\\cs(0,255,0)'..leathercraft..'\\cr') .. ')'
     local smithing = new >= 8*60 and new <= 23*60 and 'Open' or 'Closed'
-    libra.smithing = smithing == "Closed" and '\\cs(255,0,0)'..smithing..'\\cr' or '\\cs(0,255,0)'..smithing..'\\cr'
+    libra.smithing = ' (Open 8:00 - 23:00, Currently: ' .. (smithing == "Closed" and '\\cs(255,0,0)'..smithing..'\\cr' or '\\cs(0,255,0)'..smithing..'\\cr') .. ')'
     local woodworking = new >= 6*60 and new <= 21*60 and 'Open' or 'Closed'
-    libra.woodworking = woodworking == "Closed" and '\\cs(255,0,0)'..woodworking..'\\cr' or '\\cs(0,255,0)'..woodworking..'\\cr'
+    libra.woodworking = ' (Open 6:00 - 21:00, Currently: ' .. (woodworking == "Closed" and '\\cs(255,0,0)'..woodworking..'\\cr' or '\\cs(0,255,0)'..woodworking..'\\cr') .. ')'
     -- box:update(infobar)
 end)
 
