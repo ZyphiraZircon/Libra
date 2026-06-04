@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.]]
 
 _addon.name = 'Libra'
 _addon.author = 'Zyphira, based on InfoBar by Kenshi'
-_addon.version = '1.0b'
+_addon.version = '1.0'
 _addon.commands = {'libra'}
 
 config = require('config')
