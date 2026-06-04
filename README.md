@@ -58,11 +58,11 @@ Check back every so often for database updates and improvements!
 
 ### Credits: ###
 
-* Zyphira (Dhizi on Bahamut) for the putting together the database, the coding, and the layout
+* Zyphira (Dhizi on Bahamut) ((that's me!)) for the putting together the database, the coding, and the layout
 * The BG Wiki for being the actual data source, as well as most of the icons
 * Kenshi for the original InfoBar
 * Dtr (Daleterrance on Bahamut) for kicking this whole thing off
-* The AzureSkies Linkshell on Bahamut! (mwah <3)
+* The AzureSkies Linkshell on Bahamut! (<3)
 * And you!
 
 
