@@ -47,7 +47,7 @@ Specifies if Libra should have its information segments in individual lines of t
 * Click the green `<> Code` icon on the top right of this page and Download ZIP
 * Open the .zip file
 * Move the folder called Libra-main into your Windower/AddOns directory
-* Remove the "-main" part of the folder name if you wish
+* Important: Remove the "-main" part of the folder name
 * Go to your Windower/scripts directory
 * Open init.txt
 * Add the line `lua l libra` to the bottom of the file; save and close
