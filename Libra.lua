@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.]]
 
 _addon.name = 'Libra'
 _addon.author = 'Zyphira, based on InfoBar by Kenshi'
-_addon.version = '1.0'
+_addon.version = '1.0.1b'
 _addon.commands = {'libra'}
 
 config = require('config')
@@ -54,7 +54,7 @@ defaults.display.pos.x = 0
 defaults.display.pos.y = 0
 defaults.display.scale = 1
 defaults.display.padding = 0
-defaults.display.alpha = 1
+defaults.display.alpha = 0.5
 defaults.display.multiline = false
 
 settings = config.load(defaults)
@@ -851,7 +851,7 @@ function get_db(target, zones, level)
                 local familyQuery = 'SELECT * FROM "families" WHERE family = "'..family..'"'
                 if familiesdb:isopen() and familyQuery then
                     for family,mobType,job,detectSight,detectSound,detectMagic,detectLowHP,detectJobAb,detectTruSight,detectTruSound,physical,magical,breath,slashing,blunt,hand2hand,piercing,ranged,fire,wind,lightning,light,ice,earth,water,dark,needsManualSubfamily in familiesdb:urows(familyQuery) do
-                        currentMobAllRes = format_damage_type_table(physical,magical,breath,slashing,blunt,hand2hand,piercing,ranged,fire,wind,lightning,light,ice,earth,water,dark)
+                        currentMobAllRes = format_damage_type_table(tonumber(physical),tonumber(magical),tonumber(breath),tonumber(slashing),tonumber(blunt),tonumber(hand2hand),tonumber(piercing),tonumber(ranged),tonumber(fire),tonumber(wind),tonumber(lightning),tonumber(light),tonumber(ice),tonumber(earth),tonumber(water),tonumber(dark))
                         libra.mob_name = name or ''
                         libra.family = family or ''
                         libra.mobtype = mobType or ''
@@ -1040,7 +1040,7 @@ function clear_libra_variables()
     currentYExtent = 0
 end
 
-math.round = function(n) return n >= 0.0 and n-n%-1 or n-n% 1 end
+math.round = function(n) return tonumber(n) >= 0.0 and tonumber(n)-tonumber(n)%-1 or tonumber(n)-tonumber(n)% 1 end
 
 function format_damage_type_table(physical,magical,breath,slashing,blunt,hand2hand,piercing,ranged,fire,wind,lightning,light,ice,earth,water,dark)
     local all = {}
