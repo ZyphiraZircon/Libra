@@ -142,6 +142,8 @@ windower.register_event('unload', function()
     mobsdb:close()
     familiesdb:close()
     guildNpcsdb:close()
+    unload_sprites()
+    unload_texts()
 end)
 
 function load_sprites()
@@ -155,6 +157,12 @@ function load_sprites()
         windower.prim.set_position(value, (settings.display.pos.x * settings.display.scale),
             (settings.display.pos.x * settings.display.scale))
         windower.prim.set_size(value, spritesWidth * settings.display.scale, spritesWidth * settings.display.scale)
+    end
+end
+
+function unload_sprites()
+    for i, value in ipairs(spriteNamesList) do
+        windower.prim.delete(value)
     end
 end
 
@@ -181,6 +189,12 @@ function load_texts()
     texts.color(npc_name_text, 170, 220, 170)
     texts.color(aggro_text, 255, 255, 170)
     texts.color(resistance_text, 255, 255, 170)
+end
+
+function unload_texts()
+    for i, value in ipairs(textObjectsList) do
+        texts.destroy(value)
+    end
 end
 
 function render_libra(textTypeUsed)
@@ -326,7 +340,7 @@ function update_and_show_aggro_sprites(table, xoffset, yoffset, singleLineOffset
     local x_pos_shift = (xoffset * settings.display.scale) + singleLineOffset;
     for i, key in ipairs(properAggroKeyOrder) do
         local value = table[key]
-        if value and value > 0 then
+        if value and tonumber(value) > 0 then
             windower.prim.set_color(key, 255, 255, 255, 255)
             windower.prim.set_position(key, (settings.display.pos.x + x_pos_shift), (settings.display.pos.y + yoffset))
             x_pos_shift = x_pos_shift + (25 * settings.display.scale)
@@ -348,13 +362,13 @@ function hide_libra_sprites()
 end
 
 function getDegrees(value)
-    return math.round(360 / math.tau * value)
+    return round(360 / math.tau * value)
 end
 
 local dir_sets = L {'W', 'WNW', 'NW', 'NNW', 'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW',
                     'W'}
 function DegreesToDirection(val)
-    return dir_sets[math.round((val + math.pi) / math.pi * 8) + 1]
+    return dir_sets[round((val + math.pi) / math.pi * 8) + 1]
 end
 
 function combineStrings(string1, string2)
@@ -453,10 +467,11 @@ function checkCraftGuildNPC(name)
     local guildNpcsQuery = 'SELECT * FROM "guild_npcs" WHERE name = "' .. name .. '"'
     if guildNpcsdb:isopen() and guildNpcsQuery then
         for name, craft, open, close, dayoff in guildNpcsdb:urows(guildNpcsQuery) do
-            local openOrClosed = libra.currentTime and libra.currentTime >= tonumber(open) * 60 and libra.currentTime <= tonumber(close) * 60 and 'Open' or 'Closed'
+            local openOrClosed = libra.currentTime and libra.currentTime >= tonumber(open) * 60 and libra.currentTime <=
+                                     tonumber(close) * 60 and 'Open' or 'Closed'
             newName = name .. ' (Open ' .. open .. ':00 - ' .. close .. ':00, Currently: ' ..
-                        (openOrClosed == "Closed" and '\\cs(255,0,0)' .. openOrClosed .. '\\cr' or '\\cs(0,255,0)' .. openOrClosed ..
-                            '\\cr') .. ')'
+                          (openOrClosed == "Closed" and '\\cs(255,0,0)' .. openOrClosed .. '\\cr' or '\\cs(0,255,0)' ..
+                              openOrClosed .. '\\cr') .. ')'
             libra.target_race = 11
         end
     end
@@ -469,7 +484,7 @@ function get_target(index)
     clear_libra_variables()
     local player = windower.ffxi.get_player()
     local target = windower.ffxi.get_mob_by_target('st') or windower.ffxi.get_mob_by_target('t') or player
-    libra.target_name = target.name
+    libra.target_name = target.name:gsub('"','')
     libra.target_id = target.id
     libra.target_index = target.index
     libra.target_race = target.race
@@ -518,29 +533,33 @@ function clear_libra_variables()
     currentYExtent = 0
 end
 
-math.round = function(n)
-    return tonumber(n) >= 0.0 and tonumber(n) - tonumber(n) % -1 or tonumber(n) - tonumber(n) % 1
+function round(n)
+    if n ~= nil then
+        return  tonumber(n) >= 0.0 and tonumber(n) - tonumber(n) % -1 or tonumber(n) - tonumber(n) % 1
+    else
+        return 100
+    end
 end
 
 function format_damage_type_table(physical, magical, breath, slashing, blunt, hand2hand, piercing, ranged, fire, wind,
     lightning, light, ice, earth, water, dark)
     local all = {
-        ['Ph'] = math.round(physical) - 100,
-        ['Ma'] = math.round(magical) - 100,
-        ['Br'] = math.round(breath) - 100,
-        ['Sl'] = math.round(slashing) - 100,
-        ['Bl'] = math.round(blunt) - 100,
-        ['H2H'] = math.round(hand2hand) - 100,
-        ['Pi'] = math.round(piercing) - 100,
-        ['Ra'] = math.round(ranged) - 100,
-        ['Fi'] = math.round(fire) - 100,
-        ['Wi'] = math.round(wind) - 100,
-        ['Th'] = math.round(lightning) - 100,
-        ['Li'] = math.round(light) - 100,
-        ['Ea'] = math.round(earth) - 100,
-        ['Wa'] = math.round(water) - 100,
-        ['Ic'] = math.round(ice) - 100,
-        ['Da'] = math.round(dark) - 100
+        ['Ph'] = round(physical) - 100,
+        ['Ma'] = round(magical) - 100,
+        ['Br'] = round(breath) - 100,
+        ['Sl'] = round(slashing) - 100,
+        ['Bl'] = round(blunt) - 100,
+        ['H2H'] = round(hand2hand) - 100,
+        ['Pi'] = round(piercing) - 100,
+        ['Ra'] = round(ranged) - 100,
+        ['Fi'] = round(fire) - 100,
+        ['Wi'] = round(wind) - 100,
+        ['Th'] = round(lightning) - 100,
+        ['Li'] = round(light) - 100,
+        ['Ea'] = round(earth) - 100,
+        ['Wa'] = round(water) - 100,
+        ['Ic'] = round(ice) - 100,
+        ['Da'] = round(dark) - 100
     }
     return all
 end
@@ -562,6 +581,7 @@ function format_aggro_type_table(passive, link, detectSight, detectSound, detect
 end
 
 function refresh()
+    unload_sprites()
     load_sprites()
     load_texts()
     get_target(windower.ffxi.get_player().index)
@@ -626,7 +646,7 @@ windower.register_event('addon command', function(...)
             windower.add_to_chat(207, "Current position: x" .. settings.display.pos.x .. " y" .. settings.display.pos.y)
             windower.add_to_chat(207, "Current padding: " .. settings.display.padding)
             windower.add_to_chat(207, "Current alpha: " .. settings.display.alpha)
-            windower.add_to_chat(207, "Multi-line mode: " .. settings.display.multiline)
+            windower.add_to_chat(207, "Multi-line mode: " .. tostring(settings.display.multiline))
         elseif args[1]:lower() == 'scale' then
             if not args[2] then
                 windower.add_to_chat(207, "Libra: Second argument not specified, use '//libra help' for info.")
