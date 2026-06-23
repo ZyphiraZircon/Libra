@@ -25,7 +25,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.]] -- No AI was used in the making of this AddOn
 _addon.name = 'Libra'
 _addon.author = 'Zyphira, based on InfoBar by Kenshi'
-_addon.version = '1.1.0'
+_addon.version = '1.1.2'
 _addon.commands = {'libra'}
 
 config = require('config')
